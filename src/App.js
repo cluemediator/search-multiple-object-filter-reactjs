@@ -178,24 +178,25 @@ function App() {
   // exclude column list from filter
   const excludeColumns = ["id", "color"];
 
+  // handle change event of search input
   const handleChange = value => {
     setSearchText(value);
-    if (value.trim() === "") setData(dataList);
+    filterData(value);
+  };
+
+  // filter records by search text
+  const filterData = (value) => {
+    const lowercasedValue = value.toLowerCase().trim();
+    if (lowercasedValue === "") setData(dataList);
     else {
-      const lowercasedValue = value.toLowerCase();
       const filteredData = dataList.filter(item => {
         return Object.keys(item).some(key =>
-          excludeColumns.includes(key)
-            ? false
-            : item[key]
-              .toString()
-              .toLowerCase()
-              .includes(lowercasedValue)
+          excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(lowercasedValue)
         );
       });
       setData(filteredData);
     }
-  };
+  }
 
   return (
     <div className="App">
